@@ -5,12 +5,7 @@
   "sideEffects": [
     "*.css"
   ],
-  "main": "lib/index.js",
-  "module": "esm/index.js",
-  "files": [
-    "esm",
-    "lib"
-  ],
+
   "repository": {
     "type": "git",
     "url": "git+https://github.com/apache-superset/superset-ui.git"
