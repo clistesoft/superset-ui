@@ -60,6 +60,7 @@ export type BignumberChartProps = ChartProps & {
 };
 
 export default function transformProps(chartProps: BignumberChartProps) {
+  // console.log("#####",chartProps);
   const { width, height, queryData, formData } = chartProps;
   const {
     colorPicker,
@@ -68,6 +69,7 @@ export default function transformProps(chartProps: BignumberChartProps) {
     headerFontSize,
     metric = 'value',
     showTrendLine,
+    countryCode,
     startYAxisAtZero,
     subheader = '',
     subheaderFontSize,
@@ -155,6 +157,7 @@ export default function transformProps(chartProps: BignumberChartProps) {
     subheaderFontSize,
     mainColor,
     showTrendLine: supportAndShowTrendLine,
+    countryCode,
     startYAxisAtZero,
     subheader: formattedSubheader,
     trendLineData,

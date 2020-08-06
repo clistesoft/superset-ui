@@ -86,8 +86,8 @@ function WorldMap(element, props) {
       popupOnHover: true,
       highlightOnHover: true,
       borderWidth: 1,
-      borderColor: '#feffff',
-      highlightBorderColor: '#feffff',
+      borderColor: '#666666',
+      highlightBorderColor: '#666666',
       highlightFillColor: color,
       highlightBorderWidth: 1,
       popupTemplate: (geo, d) =>

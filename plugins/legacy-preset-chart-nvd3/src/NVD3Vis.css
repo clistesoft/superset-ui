@@ -174,3 +174,7 @@
   bottom: -14px;
   left: 94px;
 }
+ .nvd3-svg .tick line{
+  opacity: 0!important;
+  display: none!important;
+}

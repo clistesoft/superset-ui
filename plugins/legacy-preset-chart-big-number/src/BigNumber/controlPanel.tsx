@@ -52,6 +52,18 @@ const config: ControlPanelConfig = {
             },
           },
         ],
+        [
+          {
+            name: 'country_code',
+            config: {
+              type: 'TextControl',
+              label: t('Country Code'),
+              renderTrigger: true,
+              default: true,
+              description: t('Country code IND, USA'),
+            },
+          },
+        ],
         ['y_axis_format'],
         [
           {

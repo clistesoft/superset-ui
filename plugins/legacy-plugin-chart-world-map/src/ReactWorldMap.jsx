@@ -40,7 +40,7 @@ export default styled(WorldMapComponent)`
   .superset-legacy-chart-world-map {
     position: relative;
     svg {
-      background-color: #feffff;
+      background-color: #e9e9e9;
     }
   }
 `;

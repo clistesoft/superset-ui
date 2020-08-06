@@ -80,12 +80,12 @@ type BigNumberVisProps = {
   subheader: string;
   subheaderFontSize: number;
   showTrendLine?: boolean;
+  countryCode?: string;
   startYAxisAtZero?: boolean;
   timeRangeFixed?: boolean;
   trendLineData?: TimeSeriesDatum[];
   mainColor: string;
 };
-
 class BigNumberVis extends React.PureComponent<BigNumberVisProps, {}> {
   private gradientId: string = shortid.generate();
 
@@ -96,6 +96,7 @@ class BigNumberVis extends React.PureComponent<BigNumberVisProps, {}> {
     headerFontSize: PROPORTION.HEADER,
     mainColor: BRAND_COLOR,
     showTrendLine: false,
+    // countryCode:'NA',
     startYAxisAtZero: true,
     subheader: '',
     subheaderFontSize: PROPORTION.SUBHEADER,
@@ -103,12 +104,12 @@ class BigNumberVis extends React.PureComponent<BigNumberVisProps, {}> {
   };
 
   getClassName() {
-    const { className, showTrendLine, bigNumberFallback } = this.props;
-    const names = `superset-legacy-chart-big-number ${className} ${
+    const { className, showTrendLine, countryCode, bigNumberFallback } = this.props;
+    const names = `superset-legacy-chart-big-number ${countryCode} ${className} ${
       bigNumberFallback ? 'is-fallback-value' : ''
     }`;
     if (showTrendLine) return names;
-    return `${names} no-trendline`;
+    return `${names} no-trendline ${countryCode}`;
   }
 
   createTemporaryContainer() {
@@ -134,7 +135,7 @@ class BigNumberVis extends React.PureComponent<BigNumberVisProps, {}> {
   }
 
   renderHeader(maxHeight: number) {
-    const { bigNumber, formatNumber, width } = this.props;
+    const { bigNumber, countryCode, formatNumber, width } = this.props;
     const text = bigNumber === null ? t('No data') : formatNumber(bigNumber);
 
     const container = this.createTemporaryContainer();
@@ -270,18 +271,27 @@ class BigNumberVis extends React.PureComponent<BigNumberVisProps, {}> {
   }
 
   render() {
-    const { showTrendLine, height, headerFontSize, subheaderFontSize } = this.props;
+    // console.log('render',this.props);
+    const { showTrendLine, countryCode, height, headerFontSize, subheaderFontSize } = this.props;
     const className = this.getClassName();
-
+    const flagName = 'fflag ff-lg fflag-' + countryCode;
     if (showTrendLine) {
-      const chartHeight = Math.floor(PROPORTION.TRENDLINE * height);
-      const allTextHeight = height - chartHeight;
+      const chartHeight = height; // Math.floor(PROPORTION.TRENDLINE * height);
+      const allTextHeight = 'auto'; // height - chartHeight;
 
+      var imgUrl = countryCode ? '/static/assets/images/' + countryCode + '.svg' : '';
+      var mapStyle = {
+        backgroundImage: 'url(' + imgUrl + ')',
+      };
       return (
-        <div className={className}>
+        <div className={className} style={{ position: 'relative' }}>
+          <img src={imgUrl} alt={countryCode} className="mapbg-img" />
           <div className="text-container" style={{ height: allTextHeight }}>
             {this.renderFallbackWarning()}
             {this.renderHeader(Math.ceil(headerFontSize * (1 - PROPORTION.TRENDLINE) * height))}
+            <div>
+              <div className={flagName}></div> confirmed cases
+            </div>
             {this.renderSubheader(
               Math.ceil(subheaderFontSize * (1 - PROPORTION.TRENDLINE) * height),
             )}
@@ -312,10 +322,13 @@ export default styled(BigNumberVis)`
   }
 
   .text-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    // display: flex;
+    // flex-direction: column;
+    // justify-content: center;
+    // align-items: flex-start;
     .alert {
       font-size: ${({ theme }) => theme.typography.sizes.s};
       margin: -0.5em 0 0.4em;
@@ -324,7 +337,22 @@ export default styled(BigNumberVis)`
       border-radius: 3px;
     }
   }
-
+  .mapbg-img {
+    opacity: 0.3;
+    -webkit-box-flex: 0;
+    flex-grow: 0;
+    will-change: opacity;
+    background-color: rgb(233, 233, 233);
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 300ms ease 0s;
+  }
   .header-line {
     font-weight: ${({ theme }) => theme.typography.weights.normal};
     position: relative;

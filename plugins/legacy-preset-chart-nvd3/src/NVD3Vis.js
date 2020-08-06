@@ -377,23 +377,44 @@ function nvd3Vis(element, props) {
         break;
 
       case 'bar':
-        chart = nv.models.multiBarChart().showControls(showControls).groupSpacing(0.1);
+        chart = nv.models.multiBarChart().showControls(showControls).groupSpacing(0.25);
 
         if (!reduceXTicks) {
           width = computeBarChartWidth(data, isBarStacked, maxWidth);
         }
-        chart.width(width);
-        chart.xAxis.showMaxMin(false);
+        chart.width(width + 20);
+        chart.xAxis.showMaxMin(true);
         chart.stacked(isBarStacked);
+        chart.rightAlignYAxis(true);
+        // chart.barColor( ['#FDBB30', '#C8D65B', '#5200AE', '#00AE8F', '#0A71D5', '#C12592', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf'])
+
         break;
 
       case 'dist_bar':
+        // const colorFn = getScale(colorScheme);
+        // chart
+        // console.log(colorScheme,'>>',colorScheme);
         chart = nv.models
-          .multiBarChart()
+          // .multiBarChart()
+          .multiBarHorizontalChart()
+          // .margin({top: 10, right: 10, bottom: 50, left: 175})
           .showControls(showControls)
-          .reduceXTicks(reduceXTicks)
-          .groupSpacing(0.1); // Distance between each group of bars.
-
+          .barColor([
+            '#FDBB30',
+            '#C8D65B',
+            '#5200AE',
+            '#00AE8F',
+            '#0A71D5',
+            '#C12592',
+            '#e377c2',
+            '#7f7f7f',
+            '#bcbd22',
+            '#17becf',
+          ])
+          // .barColor(d => d.color || colorFn(cleanColorInput(d[colorKey])))
+          // .reduceXTicks(reduceXTicks)
+          .groupSpacing(0.25); // Distance between each group of bars.
+        chart.width(width + 20);
         chart.xAxis.showMaxMin(false);
 
         chart.stacked(isBarStacked);
@@ -1050,7 +1071,6 @@ function nvd3Vis(element, props) {
                 .select('.nv-wrap')
                 .append('g')
                 .attr('class', `nv-interval-annotation-layer-${index}`);
-
               const aColor = e.color || getColor(cleanColorInput(e.name), colorScheme);
               const tip = tipFactory(e);
 
